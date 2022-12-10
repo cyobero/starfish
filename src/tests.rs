@@ -5,17 +5,17 @@ mod series_tests {
     fn test_get() {
         // create a Series with i32 data
         let data = vec![5, 10, 15, 20, 25, 30];
-        let index: Vec<usize> = (0..data.len()).collect();
-        let series: Series<usize, i32> = Series::new(index, data);
+        let index: Vec<char> = vec!['a', 'b', 'c', 'd', 'e'];
+        let series = Series::new(data, index);
 
         // test the get() method with a valid index label
-        let mut element = series.get(&1);
+        let mut element = series.get(&'b');
         assert_eq!(element, Some(&10));
-        element = series.get(&3);
-        assert_eq!(element, Some(&20));
+        element = series.get(&'c');
+        assert_eq!(element, Some(&15));
 
         // test the get() method with an invalid label
-        let element = series.get(&17);
+        let element = series.get(&'x');
         assert_eq!(element, None);
     }
 }

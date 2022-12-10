@@ -2,10 +2,10 @@ use std::fmt::Display;
 
 mod tests;
 
-pub struct Series<I, T>
+pub struct Series<T, I>
 where
-    I: Display + PartialEq,
-    T: Display + PartialEq,
+    I: Display + PartialOrd + Clone,
+    T: Display + PartialOrd + Clone,
 {
     // the index labels for the elements in the series
     pub index: Vec<I>,
@@ -13,12 +13,12 @@ where
     pub data: Vec<T>,
 }
 
-impl<I, T> Series<I, T>
+impl<T, I> Series<T, I>
 where
-    I: Display + PartialEq,
-    T: Display + PartialEq,
+    I: Display + PartialOrd + Clone,
+    T: Display + PartialOrd + Clone,
 {
-    pub fn new(index: Vec<I>, data: Vec<T>) -> Series<I, T> {
+    pub fn new(data: Vec<T>, index: Vec<I>) -> Series<T, I> {
         Series { index, data }
     }
 
@@ -41,7 +41,7 @@ where
     ///
     /// let data = vec![5, 10, 15, 20, 25, 30];
     /// let index: Vec<usize> = (0..data.len()).collect();
-    /// let series: Series<usize, i32> = Series::new(index, data);
+    /// let series: Series<i32, usize> = Series::new(data, index);
     ///
     /// let element = series.get(&2);
     /// assert_eq!(element, Some(&15));
@@ -57,5 +57,17 @@ where
             // otherwise, return None
             None
         }
+    }
+
+    pub fn ge<U>(&self, other: U) -> Series<I, bool>
+    where
+        U: IntoIterator<Item = T>,
+    {
+        // create a new series with the same index labels
+        let new_series: Series<I, bool> = Series::new(Vec::new(), Vec::new());
+
+        // convert the 'other' parameter into an iterator over T values
+        let other_iter = other.into_iter();
+        unimplemented!()
     }
 }
